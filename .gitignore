@@ -1,0 +1,7 @@
+venv/
+node_modules/
+.env
+.ipynb_checkpoints
+__pycache__/
+db.sqlite3
+.vscode/
