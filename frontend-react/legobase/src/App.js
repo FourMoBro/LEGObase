@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import Parts from './components/Parts';
+import PartCount from './components/PartCount';
 import PartLoadingComponent from './components/PartLoading';
 
 function App() {
-	const PartLoading = PartLoadingComponent(Parts);
+	const PartLoading = PartLoadingComponent(PartCount);
 	const [appState, setAppState] = useState({
 		loading: false,
 		parts: null,

@@ -71,18 +71,6 @@ type Color {
    elements: [Element] @relation(name: "IS_COLORED", direction: IN)
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 type CONTAINS @relation(name: "CONTAINS") {
   from: Inventory!
   to: Part!
@@ -91,4 +79,6 @@ type CONTAINS @relation(name: "CONTAINS") {
   spare: String
 }
 
-
+type Query {
+   partCount: Int @cypher(statement: "MATCH (p:Part) RETURN COUNT (p)")
+   }
