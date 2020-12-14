@@ -157,7 +157,7 @@ SIMPLE_JWT = {
     'VERIFYING_KEY': None,
     'AUTH_HEADER_TYPES': ('Bearer',),
     'USER_ID_FIELD': 'company_id',
-    'USER_ID_CLAIM': 'role',
+    'USER_ID_CLAIM': 'company_id',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }

@@ -1,6 +1,23 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from authorization.models import User
 
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    user = User
+    @classmethod
+    def get_token(cls, user):
+
+        token = super().get_token(user)
+
+        # Add custom claims
+        if user.is_staff:
+            token['role'] = "admin"
+        else:
+            token['role'] = "user"
+        # ...
+
+        return token
 
 class RegisterUserSerializer(serializers.ModelSerializer):
 
