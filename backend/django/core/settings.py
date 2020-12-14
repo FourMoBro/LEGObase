@@ -126,7 +126,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ALLOWED_ORIGINS =[
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 AUTH_USER_MODEL = "authorization.User"
@@ -154,9 +155,9 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('JWT',),
+    'AUTH_HEADER_TYPES': ('Bearer',),
     'USER_ID_FIELD': 'company_id',
-    'USER_ID_CLAIM': 'role',
+    'USER_ID_CLAIM': 'company_id',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }

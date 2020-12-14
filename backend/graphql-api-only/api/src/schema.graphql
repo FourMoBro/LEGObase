@@ -1,0 +1,94 @@
+type Element {
+   _id: Long!
+   id: String!
+   is_colored: [Color] @relation(name: "IS_COLORED", direction: OUT)
+   parts: [Part] @relation(name: "HAS_ELEMENT", direction: IN)
+}
+
+type Part {
+   _id: Long!
+   id: String!
+   material: String!
+   name: String!
+   has_color: [Color] @relation(name: "HAS_COLOR", direction: OUT)
+   has_element: [Element] @relation(name: "HAS_ELEMENT", direction: OUT)
+   is_of_type: [PartCategory] @relation(name: "IS_OF_TYPE", direction: OUT)
+   has_printed_variant: [Part] @relation(name: "HAS_PRINTED_VARIANT", direction: OUT)
+   pairs_with: [Part] @relation(name: "PAIRS_WITH", direction: OUT)
+   sub_part_with: [Part] @relation(name: "SUB_PART_WITH", direction: OUT)
+   supercedes: [Part] @relation(name: "SUPERCEDES", direction: OUT)
+   has_pattern_variant: [Part] @relation(name: "HAS_PATTERN_VARIANT", direction: OUT)
+   has_alternate: [Part] @relation(name: "HAS_ALTERNATE", direction: OUT)
+   inventorys: [Inventory] @relation(name: "CONTAINS", direction: IN)
+}
+
+type Set {
+   _id: Long!
+   id: String!
+   name: String!
+   pieces: String!
+   year: String!
+   belongs_to: [Theme] @relation(name: "BELONGS_TO", direction: OUT)
+}
+
+type Inventory {
+   _id: Long!
+   id: String!
+   version: String!
+   contains: [Part] @relation(name: "CONTAINS", direction: OUT)
+   CONTAINS_rel: [CONTAINS]
+}
+
+type PartCategory {
+   _id: Long!
+   id: String!
+   name: String!
+   parts: [Part] @relation(name: "IS_OF_TYPE", direction: IN)
+}
+
+type Theme {
+   _id: Long!
+   id: String!
+   name: String!
+   has_subtheme: [Theme] @relation(name: "HAS_SUBTHEME", direction: OUT)
+   sets: [Set] @relation(name: "BELONGS_TO", direction: IN)
+}
+
+type MiniFigure {
+   _id: Long!
+   id: String!
+   name: String!
+   pieces: String!
+}
+
+type Color {
+   _id: Long!
+   id: String!
+   name: String!
+   rgb: String!
+   transparent: String!
+   parts: [Part] @relation(name: "HAS_COLOR", direction: IN)
+   elements: [Element] @relation(name: "IS_COLORED", direction: IN)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+type CONTAINS @relation(name: "CONTAINS") {
+  from: Inventory!
+  to: Part!
+  color: String
+  qty: String
+  spare: String
+}
+
+
