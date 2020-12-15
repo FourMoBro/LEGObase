@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import PartCount from './components/PartCount';
 import PartLoadingComponent from './components/PartLoading';
+import axiosInstance from './axios';
+
+
 
 function App() {
 	const PartLoading = PartLoadingComponent(PartCount);
@@ -12,7 +15,7 @@ function App() {
 
 	useEffect(() => {
 		setAppState({ loading: true });
-		const apiUrl = `http://127.0.0.1:4001/graphql/`;
+		const apiUrl = `http://localhost:4001/graphql/`;
 		fetch(apiUrl)
 			.then((data) => data.json())
 			.then((parts) => {
@@ -26,4 +29,5 @@ function App() {
 		</div>
 	);
 }
+
 export default App;
