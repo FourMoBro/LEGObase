@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch, Link } from 'react-router-dom';
 
 import './styles/index.css';
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 //import App from './components/App';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -12,36 +14,69 @@ import Logout from './components/auth/Logout';
 
 import reportWebVitals from './reportWebVitals';
 
-import { ApolloClient, InMemoryCache, gql, ApolloProvider, useQuery } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { ApolloClient, InMemoryCache, gql, ApolloProvider, 
+  useQuery, createHttpLink } from '@apollo/client';
 
-const client = new ApolloClient({
+
+const useStyles = makeStyles({
+  depositContext: {
+    flex: 1,
+  },
+  navLink: {
+    textDecoration: 'none',
+  },
+})
+//config Apollo Client for graphql 
+const httpLink = createHttpLink({
   uri: 'http://localhost:4001/graphql',
-  cache: new InMemoryCache()
 });
 
-const GET_PART_LIST = gql`
-      query{ 
-          Part{
-            id
-            name    
-          }
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('refresh_token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+})
+
+const GET_PART_COUNT = gql`
+      {
+        partCount
       }
     `
 
 
-function AllParts() {
-  const { loading, error, data } = useQuery(GET_PART_LIST);
+function PartCount() {
+  const classes = useStyles()
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  const { loading, error, data } = useQuery(GET_PART_COUNT);
+  if (error) return <p>Sign in to view</p>
 
-  return data.Part.map(({ id, name }) => (
-    <div key={id}>
-      <p>
-        {id}: {name}
-      </p>
-    </div>
-  ));
+  return(
+    <React.Fragment>
+      <div>Total Parts</div>
+      <Typography component="p" variant="h4">
+        {loading ? 'Loading...' : data.partCount}
+      </Typography>
+      <Typography color="textSecondary" className={classes.depositContext}>
+        parts found
+      </Typography>
+      <div>
+        <Link to="/parts" className={classes.navLink}>
+          View PArts
+        </Link>
+      </div>
+    </React.Fragment>
+  )
 }
 
 function App() {
@@ -49,7 +84,7 @@ function App() {
     <ApolloProvider client={client}>
       <div>
         <h2>My first Apollo app 🚀</h2>
-        <AllParts />
+        <PartCount/>
       </div>
     </ApolloProvider>
   );
