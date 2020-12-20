@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import { Box, Button, Container, Grid, Link, TextField, Typography, makeStyles } from '@material-ui/core';
 
 import Page from '../../components/Page';
+import axiosInstance from '../../axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,23 +20,38 @@ const LoginView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  const handleOnSubmit = (values) => {
+    axiosInstance
+        .post(`token/obtain/`, {
+            company_id: values.company_id,
+            password: values.password,
+        })
+        .then((res) => {
+            localStorage.setItem('access_token', res.data.access);
+            localStorage.setItem('refresh_token', res.data.refresh);
+            axiosInstance.defaults.headers['Authorization'] =
+                'JWT ' + localStorage.getItem('access_token');
+            navigate('/');
+            //console.log(res);
+            //console.log(res.data);
+        });
+};
+
   return (
     <Page className={classes.root} title="Login" >
       <Box display="flex" flexDirection="column" height="100%" justifyContent="center" >
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              company_id: '00000000',  
-              //email: 'demo@devias.io', 
-              password: 'Password123' }}
+              company_id: '',  
+              //email: '', 
+              password: '' }}
             validationSchema={Yup.object().shape({
               company_id: Yup.string().max(15).required('CompanyID is required'),  
               //email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
-            }}
+            onSubmit={handleOnSubmit}
           >
             {({
               errors,
@@ -51,9 +67,9 @@ const LoginView = () => {
                   <Typography color="textPrimary" variant="h2" >
                     Sign in
                   </Typography>
-                  <Typography color="textSecondary" gutterBottom variant="body2" >
+                  {/* <Typography color="textSecondary" gutterBottom variant="body2" >
                     Sign in on the internal platform
-                  </Typography>
+                  </Typography> */}
                 </Box>
 
                 <Box mt={3} mb={1} >

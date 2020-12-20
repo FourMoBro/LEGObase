@@ -11,6 +11,7 @@ import DashboardLayout from '../src/layouts/DashboardLayout';
 
 import MainLayout from '../src/layouts/MainLayout';
 import LoginView from '../src/views/auth/LoginView';
+import LogoutView from '../src/views/auth/LogoutView';
 import RegisterView from '../src/views/auth/RegisterView';
 import NotFoundView from '../src/views/errors/NotFoundView';
 
@@ -36,6 +37,7 @@ const routes = [
       element: <MainLayout />,
       children: [
         { path: 'login', element: <LoginView /> },
+        { path: 'logout', element: <LogoutView /> },
         { path: 'register', element: <RegisterView /> },
         { path: '404', element: <NotFoundView /> },
         { path: '/', element: <Navigate to="/app/dashboard" /> },

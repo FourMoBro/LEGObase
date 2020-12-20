@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 import { Box, Button, Checkbox, Container, FormHelperText, Link, TextField, Typography, makeStyles } from '@material-ui/core';
 import Page from '../../components/Page';
+import axiosInstance from '../../axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +18,19 @@ const useStyles = makeStyles((theme) => ({
 const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  
+
+  const handleOnSubmit = (values) => {
+    axiosInstance
+    .post(`register/`, {      
+        email: values.email,
+        company_id: values.company_id,				
+        password: values.password,
+    })
+    .then((res) => {
+        navigate('/login');
+    });
+  };
 
   return (
     <Page className={classes.root} title="Register" >
@@ -41,9 +55,7 @@ const RegisterView = () => {
                 //policy: Yup.boolean().oneOf([true], 'This field must be checked')
               })
             }
-            onSubmit={() => {
-              navigate('/login', { replace: true });
-            }}
+            onSubmit={handleOnSubmit}
           >
             {({
               errors,
