@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 import DashboardLayout from '../src/layouts/DashboardLayout';
-//import DashboardView from '../src/views/reports/DashboardView';
+import DashboardView from '../src/views/reports/DashboardView';
 //import ElementListView from '../src/views/elements/ElementListView';
 //import InventoryListView from '../src/views/inventories/InventoryListView';
 //import PartListView from '../src/views/parts/PartListView';
@@ -19,19 +19,19 @@ import NotFoundView from '../src/views/errors/NotFoundView';
 
 
 const routes = [
-    // {
-    //   path: 'app',
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { path: 'dashboard', element: <DashboardView /> },
+    {
+      path: 'app',
+      element: <DashboardLayout />,
+      children: [
+        { path: 'dashboard', element: <DashboardView /> },
     //     { path: 'elements', element: <ElementListView /> },
     //     { path: 'inventories', element: <InventoryListView /> },
     //     { path: 'parts', element: <PartListView /> },        
     //     { path: 'sets', element: <SetListView /> },        
     //     { path: 'themes', element: <ThemeListView /> },
     //     { path: '*', element: <Navigate to="/404" /> }
-    //   ]
-    // },
+      ]
+    },
     {
       path: '/',
       element: <MainLayout />,
